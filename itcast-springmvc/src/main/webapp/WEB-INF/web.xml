@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<filter>
+		<filter-name>tokenFilter</filter-name>
+		<filter-class>cn.itcast.TokenFilter</filter-class>
+		<init-param>
+		<param-name>excludedPages</param-name>
+		<param-value>/login</param-value>
+		</init-param>
+		<init-param>
+  <param-name>redirectPath</param-name><!-- 未通过跳转到登录界面 -->
+  <param-value>/index.jsp</param-value>
+ </init-param>
+	</filter>
+	<filter-mapping>
+	<url-pattern>/*</url-pattern>
+	<filter-name>tokenFilter</filter-name>
+	</filter-mapping>
+	<!-- 配置DispatcherServlet -->
+	<!-- 配置DispatcherServlet的作用是：如果在某个方法上配置了@RequestMapping("/helloworld")， 
+		当浏览器访问helloworld时，DispatcherServlet会将这个请求发送给@RequestMapping("/helloworld") 
+		所在的方法上，执行这个方法 -->
+	<servlet>
+		<servlet-name>SpringDispatcherServlet</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 配置DispatcherServlet的一个初始化参数：配置springMVC配置文件的位置和名称 -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath*:spring-mvc.xml</param-value>
+		</init-param>
+		<!--SpringDispatcherServlet在当前web应用被加载的时候被创建，而不是等第一次请求的时候被创建 -->
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SpringDispatcherServlet</servlet-name>
+		<url-pattern>/</url-pattern>  <!-- 可以应答所有请求 -->
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>/index.html</welcome-file>
+	</welcome-file-list>
+</web-app>
